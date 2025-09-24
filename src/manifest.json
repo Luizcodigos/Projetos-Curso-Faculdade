@@ -1,0 +1,19 @@
+{
+  "name": "App Horários",
+  "short_name": "Horários",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+  
+    {
+      "src": "sol.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+
+
+  ]
+}
