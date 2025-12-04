@@ -2,116 +2,149 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Chatbot Ana - Voz</title>
-    <style>
-    body {
-        font-family: 'Verdana', sans-serif;
-        background: linear-gradient(145deg, #e0f7fa, #b2ebf2);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ana - Chatbot</title>
+<style>
+/* ======== ESTILO GLOBAL ======== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
 
+/* ======== CAIXA DO CHATBOT ======== */
+.chatbox {
+    width: 350px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    padding: 30px 25px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.2s;
+}
+
+.chatbox:hover {
+    transform: translateY(-5px);
+}
+
+.chatbox h2 {
+    margin-top: 0;
+    color: #007bff;
+}
+
+/* ======== BOTÃO ======== */
+button {
+    padding: 15px 25px;
+    font-size: 1em;
+    font-weight: bold;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* ======== STATUS ======== */
+.status {
+    margin-top: 15px;
+    font-size: 0.95em;
+    color: #555;
+    min-height: 20px;
+    transition: all 0.3s;
+}
+
+.status.active {
+    color: #28a745; /* Verde para ouvindo */
+    font-weight: bold;
+}
+
+.status.error {
+    color: #dc3545; /* Vermelho para erro */
+    font-weight: bold;
+}
+
+/* ======== MICROFONE ======== */
+.microphone {
+    font-size: 3em;
+    color: #007bff;
+    margin-top: 15px;
+    transition: transform 0.5s ease, color 0.3s ease;
+}
+
+.microphone.active {
+    transform: rotate(360deg) scale(1.2);
+    color: #28a745;
+}
+
+/* ======== RESPOSTA ======== */
+.response {
+    margin-top: 20px;
+    font-size: 1em;
+    color: #333;
+    min-height: 50px;
+    background-color: #f1f5f9;
+    padding: 12px 15px;
+    border-radius: 10px;
+    text-align: left;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+    word-wrap: break-word;
+}
+
+/* ======== RESPONSIVIDADE ======== */
+@media (max-width: 400px) {
     .chatbox {
-        width: 350px;
-        background-color: #ffffff;
-        border-radius: 15px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        padding: 30px 25px;
-        text-align: center;
-        position: relative;
-        transition: transform 0.2s;
-    }
-
-    .chatbox:hover {
-        transform: translateY(-5px);
-    }
-
-    .chatbox h2 {
-        margin-top: 0;
-        color: #007bff;
+        width: 90%;
+        padding: 20px;
     }
 
     button {
-        padding: 15px 25px;
-        font-size: 1em;
-        font-weight: bold;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    button:hover {
-        background-color: #0056b3;
-        transform: scale(1.05);
-    }
-
-    .status {
-        margin-top: 15px;
-        font-size: 0.95em;
-        color: #555;
-        min-height: 20px;
-        transition: all 0.3s;
-    }
-
-    .status.active {
-        color: #28a745;
-        font-weight: bold;
-    }
-
-    .status.error {
-        color: #dc3545;
-        font-weight: bold;
+        width: 100%;
+        padding: 12px;
     }
 
     .microphone {
-        font-size: 3em;
-        color: #007bff;
-        margin-top: 15px;
-        transition: transform 0.5s ease, color 0.3s ease;
+        font-size: 2.5em;
     }
+}
+</style>
 
-    .microphone.active {
-        transform: rotate(360deg) scale(1.2);
-        color: #28a745;
-    }
-
-    .response {
-        margin-top: 20px;
-        font-size: 1em;
-        color: #333;
-        min-height: 50px;
-        background-color: #f1f5f9;
-        padding: 12px 15px;
-        border-radius: 10px;
-        text-align: left;
-        box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
-        word-wrap: break-word;
-    }
-    </style>
 </head>
 <body>
 
 <div class="chatbox">
-    <h2>Chatbot Ana</h2>
+    <h2>Ana – Chatbot de Enfermagem</h2>
     <button onclick="ouvir()">Falar Agora</button>
-    <div class="status" id="status"></div>
-    <div class="microphone" id="mic">🎤</div>
+    <div class="status" id="status">Clique no botão e fale...</div>
+    <div class="microphone" id="microphone">🎤</div>
     <div class="response" id="response"></div>
 </div>
 
 <script>
-const perguntas = [
-    { pergunta: "como você está", resposta: "Estou ótimo! Obrigado por perguntar." },
-    { pergunta: "qual a função do enfermeiro", resposta: "O enfermeiro é responsável pelo cuidado direto ao paciente e pela coordenação das atividades de enfermagem." },
-    { pergunta: "como aplicar uma injeção", resposta: "Para aplicar uma injeção, use técnica asséptica, escolha a seringa correta e siga os protocolos de segurança." },
-    { pergunta: "o que é pressão arterial", resposta: "Pressão arterial é a força que o sangue exerce contra as paredes das artérias." },
-    { pergunta: "qual a importância da vacinação", resposta: "A vacinação previne doenças e protege a saúde individual e coletiva." }
+const nomeUsuario = "jake";
+
+const perguntasERespostas = [
+    { pergunta: "o que é enfermagem", resposta: "Enfermagem é a área da saúde dedicada ao cuidado, prevenção e promoção da saúde das pessoas." },
+    { pergunta: "o que faz um enfermeiro", resposta: "O enfermeiro cuida dos pacientes, administra medicamentos e realiza diversos procedimentos." },
+    { pergunta: "o que é vacina", resposta: "A vacina estimula o sistema imunológico e ajuda a prevenir doenças graves." },
+    { pergunta: "o que é um prontuário", resposta: "O prontuário é o registro onde ficam todas as informações do paciente, como evolução, exames e cuidados." },
+    { pergunta: "como cuidar de uma ferida", resposta: "Para cuidar de uma ferida, higienize, use curativo estéril e observe sinais de infecção." },
+
+    { pergunta: "o que é sinais vitais", resposta: "Sinais vitais são medidas importantes como pressão arterial, temperatura, frequência cardíaca e respiratória." },
+    { pergunta: "o que é triagem", resposta: "Triagem é o processo de avaliar o estado do paciente para definir a prioridade do atendimento." },
+    { pergunta: "o que significa urgência", resposta: "Urgência é quando a pessoa precisa de atendimento rápido, mas não corre risco imediato de morte." },
+    { pergunta: "com o que o técnico de enfermagem trabalha", resposta: "O técnico de enfermagem atua diretamente nos cuidados básicos do paciente, administração de medicamentos e assistência ao enfermeiro." },
+    { pergunta: "o que é higiene das mãos", resposta: "Higiene das mãos é o ato de limpar as mãos corretamente para evitar infecções e proteger os pacientes." }
 ];
 
 function falar(texto) {
@@ -122,52 +155,58 @@ function falar(texto) {
 }
 
 function ouvir() {
-    const statusDiv = document.getElementById("status");
-    const micDiv = document.getElementById("mic");
+    const status = document.getElementById("status");
+    const microphone = document.getElementById("microphone");
     const responseDiv = document.getElementById("response");
+
+    status.textContent = "Ouvindo...";
+    status.classList.remove("error");
+    status.classList.add("active");
+    microphone.classList.add("active");
 
     const reconhecer = new webkitSpeechRecognition();
     reconhecer.lang = "pt-BR";
     reconhecer.continuous = false;
     reconhecer.interimResults = false;
-
-    statusDiv.textContent = "Ouvindo...";
-    statusDiv.className = "status active";
-    micDiv.className = "microphone active";
-
     reconhecer.start();
 
     reconhecer.onresult = function(event) {
         const textoFalado = event.results[0][0].transcript.toLowerCase();
         let respostaEncontrada = false;
 
-        for (let item of perguntas) {
-            if (textoFalado.includes(item.pergunta)) {
-                falar(item.resposta);
-                responseDiv.textContent = "Ana: " + item.resposta;
-                respostaEncontrada = true;
-                break;
-            }
+        // Reconhecimento do nome Jake
+        if (textoFalado.includes(nomeUsuario)) {
+            const resposta = "Oi Jake! Que bom falar com você.";
+            falar(resposta);
+            responseDiv.textContent = "Ana: " + resposta;
+            respostaEncontrada = true;
         }
+
+        // Verificando a lista de perguntas
+        perguntasERespostas.forEach(pr => {
+            if (textoFalado.includes(pr.pergunta)) {
+                falar(pr.resposta);
+                responseDiv.textContent = "Ana: " + pr.resposta;
+                respostaEncontrada = true;
+            }
+        });
 
         if (!respostaEncontrada) {
-            const mensagemErro = "Desculpe, eu só entendo perguntas sobre enfermagem específicas.";
-            falar(mensagemErro);
-            responseDiv.textContent = "Ana: " + mensagemErro;
+            const frase = "Desculpe Jake, eu sou a Ana e não entendi. Tente perguntar algo sobre enfermagem.";
+            falar(frase);
+            responseDiv.textContent = frase;
         }
 
-        statusDiv.textContent = "";
-        statusDiv.className = "status";
-        micDiv.className = "microphone";
+        status.textContent = "Clique no botão e fale...";
+        status.classList.remove("active");
+        microphone.classList.remove("active");
     };
 
-    reconhecer.onerror = function(event) {
-        const erroMsg = "Não consegui ouvir. Verifique o microfone.";
-        falar(erroMsg);
-        responseDiv.textContent = "Ana: " + erroMsg;
-        statusDiv.textContent = "";
-        statusDiv.className = "status error";
-        micDiv.className = "microphone";
+    reconhecer.onerror = function() {
+        status.textContent = "Não consegui ouvir. Verifique o microfone.";
+        status.classList.remove("active");
+        status.classList.add("error");
+        microphone.classList.remove("active");
     };
 }
 </script>
