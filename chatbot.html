@@ -4,128 +4,179 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ana - Chatbot</title>
-<style>
+    <style>
 /* ======== ESTILO GLOBAL ======== */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+    font-family: 'Poppins', Arial, sans-serif;
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    padding: 20px;
 }
 
 /* ======== CAIXA DO CHATBOT ======== */
 .chatbox {
-    width: 350px;
-    background-color: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    padding: 30px 25px;
+    width: 360px;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 35px 25px 30px 25px;
     text-align: center;
     position: relative;
-    transition: transform 0.2s;
+
+    box-shadow: 0px 18px 35px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .chatbox:hover {
-    transform: translateY(-5px);
+    transform: translateY(-6px);
+    box-shadow: 0px 25px 40px rgba(0, 0, 0, 0.18);
 }
 
 .chatbox h2 {
     margin-top: 0;
-    color: #007bff;
+    margin-bottom: 10px;
+    color: #1565c0;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
-/* ======== BOTÃO ======== */
+/* ======== AVATAR ======== */
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 12px;
+    border: 4px solid #ffffff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ======== BOTÕES ======== */
 button {
-    padding: 15px 25px;
-    font-size: 1em;
-    font-weight: bold;
-    background-color: #007bff;
+    padding: 13px 22px;
+    font-size: 0.95em;
+    font-weight: 600;
+    background-color: #1976d2;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
+    margin: 6px;
     cursor: pointer;
-    transition: all 0.3s ease;
+
+    transition: all 0.25s ease;
 }
 
 button:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
+    background-color: #0d47a1;
+    transform: scale(1.06);
+}
+
+.clear-btn {
+    background-color: #d32f2f;
+}
+
+.clear-btn:hover {
+    background-color: #9a0007;
+}
+
+/* ======== CAMPO DE TEXTO ======== */
+input {
+    width: 92%;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 10px;
+    border: 2px solid #bbdefb;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus {
+    border-color: #1976d2;
+    box-shadow: 0 0 8px rgba(25, 118, 210, 0.4);
 }
 
 /* ======== STATUS ======== */
 .status {
-    margin-top: 15px;
+    margin-top: 12px;
     font-size: 0.95em;
     color: #555;
     min-height: 20px;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
 }
 
 .status.active {
-    color: #28a745; /* Verde para ouvindo */
+    color: #2e7d32;
     font-weight: bold;
 }
 
 .status.error {
-    color: #dc3545; /* Vermelho para erro */
+    color: #c62828;
     font-weight: bold;
 }
 
 /* ======== MICROFONE ======== */
 .microphone {
-    font-size: 3em;
-    color: #007bff;
+    font-size: 3.5em;
+    color: #1976d2;
     margin-top: 15px;
     transition: transform 0.5s ease, color 0.3s ease;
 }
 
 .microphone.active {
     transform: rotate(360deg) scale(1.2);
-    color: #28a745;
+    color: #2e7d32;
 }
 
 /* ======== RESPOSTA ======== */
 .response {
-    margin-top: 20px;
+    margin-top: 22px;
     font-size: 1em;
-    color: #333;
-    min-height: 50px;
-    background-color: #f1f5f9;
-    padding: 12px 15px;
-    border-radius: 10px;
+    color: #263238;
+    min-height: 60px;
+    background-color: #e3f2fd;
+    padding: 15px;
+    border-radius: 12px;
+
     text-align: left;
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
-    word-wrap: break-word;
+    box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.08);
+    line-height: 1.5;
+    border-left: 5px solid #1976d2;
 }
 
 /* ======== RESPONSIVIDADE ======== */
-@media (max-width: 400px) {
+@media (max-width: 450px) {
     .chatbox {
-        width: 90%;
-        padding: 20px;
+        width: 92%;
+        padding: 25px 20px;
+    }
+
+    .microphone {
+        font-size: 2.8em;
     }
 
     button {
         width: 100%;
-        padding: 12px;
-    }
-
-    .microphone {
-        font-size: 2.5em;
     }
 }
 </style>
+
 
 </head>
 <body>
 
 <div class="chatbox">
     <h2>Ana – Chatbot de Enfermagem</h2>
-    <button onclick="ouvir()">Falar Agora</button>
-    <div class="status" id="status">Clique no botão e fale...</div>
+
+    <button onclick="ouvir()">🎤 Falar Agora</button>
+
+    <input type="text" id="textoDigitado" placeholder="Digite sua pergunta...">
+    <button onclick="enviarPergunta()">Enviar</button>
+    <button class="clear-btn" onclick="limpar()">Limpar</button>
+
+    <div class="status" id="status">Clique ou digite sua pergunta...</div>
     <div class="microphone" id="microphone">🎤</div>
     <div class="response" id="response"></div>
 </div>
@@ -134,77 +185,92 @@ button:hover {
 const nomeUsuario = "jake";
 
 const perguntasERespostas = [
-    { pergunta: "o que é enfermagem", resposta: "Enfermagem é a área da saúde dedicada ao cuidado, prevenção e promoção da saúde das pessoas." },
-    { pergunta: "o que faz um enfermeiro", resposta: "O enfermeiro cuida dos pacientes, administra medicamentos e realiza diversos procedimentos." },
-    { pergunta: "o que é vacina", resposta: "A vacina estimula o sistema imunológico e ajuda a prevenir doenças graves." },
-    { pergunta: "o que é um prontuário", resposta: "O prontuário é o registro onde ficam todas as informações do paciente, como evolução, exames e cuidados." },
-    { pergunta: "como cuidar de uma ferida", resposta: "Para cuidar de uma ferida, higienize, use curativo estéril e observe sinais de infecção." },
-
-    { pergunta: "o que é sinais vitais", resposta: "Sinais vitais são medidas importantes como pressão arterial, temperatura, frequência cardíaca e respiratória." },
-    { pergunta: "o que é triagem", resposta: "Triagem é o processo de avaliar o estado do paciente para definir a prioridade do atendimento." },
+    { pergunta: "o que é enfermagem", resposta: "Enfermagem é a área da saúde focada no cuidado, prevenção e promoção da saúde das pessoas." },
+    { pergunta: "o que faz um enfermeiro", resposta: "O enfermeiro cuida dos pacientes, administra medicamentos e realiza diversos procedimentos de saúde." },
+    { pergunta: "o que é vacina", resposta: "A vacina estimula seu sistema imunológico para prevenir doenças graves." },
+    { pergunta: "o que é um prontuário", resposta: "O prontuário é o registro onde ficam todas as informações sobre o paciente." },
+    { pergunta: "como cuidar de uma ferida", resposta: "Higienize corretamente, use curativo estéril e observe sinais de infecção." },
+    { pergunta: "o que é sinais vitais", resposta: "São indicadores importantes como temperatura, frequência cardíaca, respiratória e pressão arterial." },
+    { pergunta: "o que é triagem", resposta: "Triagem é o processo de priorizar pacientes conforme a gravidade da situação." },
     { pergunta: "o que significa urgência", resposta: "Urgência é quando a pessoa precisa de atendimento rápido, mas não corre risco imediato de morte." },
-    { pergunta: "com o que o técnico de enfermagem trabalha", resposta: "O técnico de enfermagem atua diretamente nos cuidados básicos do paciente, administração de medicamentos e assistência ao enfermeiro." },
-    { pergunta: "o que é higiene das mãos", resposta: "Higiene das mãos é o ato de limpar as mãos corretamente para evitar infecções e proteger os pacientes." }
+    { pergunta: "com o que o técnico de enfermagem trabalha", resposta: "Ele atua nos cuidados básicos, administração de medicamentos e apoio ao enfermeiro." },
+    { pergunta: "o que é higiene das mãos", resposta: "Higienizar as mãos evita infecções e protege pacientes e profissionais." }
 ];
 
 function falar(texto) {
-    const discurso = new SpeechSynthesisUtterance(texto);
-    discurso.lang = "pt-BR";
-    discurso.rate = 1;
-    window.speechSynthesis.speak(discurso);
+    const fala = new SpeechSynthesisUtterance(texto);
+    fala.lang = "pt-BR";
+    fala.rate = 1;
+    window.speechSynthesis.speak(fala);
+}
+
+function processarPergunta(textoFalado) {
+    const responseDiv = document.getElementById("response");
+
+    let resposta = null;
+
+    if (textoFalado.includes(nomeUsuario)) {
+        resposta = "Oi Jake! É sempre bom falar com você.";
+    }
+
+    if (!resposta) {
+        const encontrado = perguntasERespostas.find(pr =>
+            textoFalado.includes(pr.pergunta)
+        );
+        if (encontrado) resposta = encontrado.resposta;
+    }
+
+    if (!resposta) {
+        resposta = "Desculpe Jake, eu não entendi. Tente perguntar algo sobre enfermagem.";
+    }
+
+    responseDiv.textContent = "Ana: " + resposta;
+    falar(resposta);
+}
+
+function enviarPergunta() {
+    const texto = document.getElementById("textoDigitado").value.toLowerCase().trim();
+    if (texto === "") return;
+
+    processarPergunta(texto);
+}
+
+function limpar() {
+    document.getElementById("textoDigitado").value = "";
+    document.getElementById("response").textContent = "";
 }
 
 function ouvir() {
     const status = document.getElementById("status");
     const microphone = document.getElementById("microphone");
-    const responseDiv = document.getElementById("response");
+
+    const SpeechAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechAPI) {
+        document.getElementById("response").textContent = "Seu navegador não suporta reconhecimento de voz.";
+        return;
+    }
 
     status.textContent = "Ouvindo...";
-    status.classList.remove("error");
     status.classList.add("active");
     microphone.classList.add("active");
 
-    const reconhecer = new webkitSpeechRecognition();
+    const reconhecer = new SpeechAPI();
     reconhecer.lang = "pt-BR";
-    reconhecer.continuous = false;
     reconhecer.interimResults = false;
+
     reconhecer.start();
 
     reconhecer.onresult = function(event) {
         const textoFalado = event.results[0][0].transcript.toLowerCase();
-        let respostaEncontrada = false;
+        processarPergunta(textoFalado);
 
-        // Reconhecimento do nome Jake
-        if (textoFalado.includes(nomeUsuario)) {
-            const resposta = "Oi Jake! Que bom falar com você.";
-            falar(resposta);
-            responseDiv.textContent = "Ana: " + resposta;
-            respostaEncontrada = true;
-        }
-
-        // Verificando a lista de perguntas
-        perguntasERespostas.forEach(pr => {
-            if (textoFalado.includes(pr.pergunta)) {
-                falar(pr.resposta);
-                responseDiv.textContent = "Ana: " + pr.resposta;
-                respostaEncontrada = true;
-            }
-        });
-
-        if (!respostaEncontrada) {
-            const frase = "Desculpe Jake, eu sou a Ana e não entendi. Tente perguntar algo sobre enfermagem.";
-            falar(frase);
-            responseDiv.textContent = frase;
-        }
-
-        status.textContent = "Clique no botão e fale...";
+        status.textContent = "Clique ou digite sua pergunta...";
         status.classList.remove("active");
         microphone.classList.remove("active");
     };
 
     reconhecer.onerror = function() {
-        status.textContent = "Não consegui ouvir. Verifique o microfone.";
-        status.classList.remove("active");
+        status.textContent = "Erro no microfone.";
         status.classList.add("error");
         microphone.classList.remove("active");
     };
@@ -213,5 +279,8 @@ function ouvir() {
 
 </body>
 </html>
+
+
+
 
 
