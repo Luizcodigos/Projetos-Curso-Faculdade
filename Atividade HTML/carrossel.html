@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Mundo dos Carros</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #222;
+      color: white;
+      padding: 15px;
+    }
+
+    nav a {
+      color: white;
+      margin-right: 15px;
+      text-decoration: none;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    section {
+      margin-bottom: 30px;
+    }
+
+    .carrossel {
+      width: 400px;
+      height: 400px;
+      margin: auto;
+      overflow: hidden;
+
+    }
+
+    .carrossel img {
+      width: 100%;
+      display: none;
+    }
+
+    .carrossel img.ativa {
+      display: block;
+    }
+
+    .botoes {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    footer {
+      background-color: #222;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Mundo dos Carros</h1>
+    <nav>
+      <a href="#">Início</a>
+      <a href="#">Modelos</a>
+      <a href="#">Contato</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>Seção Principal</h2>
+      <p>Bem-vindo ao Mundo dos Carros, um site dedicado a apaixonados por velocidade, design e inovação automotiva.</p>
+    </section>
+
+    <section>
+      <h2>Conteúdos</h2>
+
+      <h3>Carros Esportivos</h3>
+      <p>Os carros esportivos se destacam pela alta performance, motores potentes e design arrojado, oferecendo emoção ao dirigir.</p>
+
+      <h3>Carros Econômicos</h3>
+      <p>Os carros econômicos são ideais para o dia a dia, com baixo consumo de combustível e manutenção acessível.</p>
+    </section>
+
+    <section>
+      <h2>Galeria de Carros</h2>
+
+      <div class="carrossel">
+        <img src="carro1.jpg" class="ativa">
+        <img src="carro2.jpg">
+        <img src="carro3.jpg">
+      </div>
+
+      <div class="botoes">
+        <button onclick="anterior()">Anterior</button>
+        <button onclick="proximo()">Próximo</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 Mundo dos Carros | Contato: contato@mundodoscarros.com</p>
+  </footer>
+
+  <script>
+    let indice = 0;
+    const imagens = document.querySelectorAll(".carrossel img");
+
+    function mostrarImagem(tela) {
+      imagens.forEach(img => img.classList.remove("ativa"));
+      imagens[tela].classList.add("ativa");
+    }
+
+    function proximo() {
+      indice = (indice + 1) % imagens.length;
+      mostrarImagem(indice);
+    }
+
+    function anterior() {
+      indice = (indice - 1 + imagens.length) % imagens.length;
+      mostrarImagem(indice);
+    }
+  </script>
+
+</body>
+</html>
